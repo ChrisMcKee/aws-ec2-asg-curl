@@ -4,8 +4,11 @@ A CLI tool to send HTTP(S) GET or POST requests to all EC2 instances in a given 
 
 ## Usage
 
+Ensure you set your AWS env vars, be it AWS_PROFILE / AWS_ACCESS_KEY etc. 
+
 ```sh
-go run main.go [options]
+# -h for help
+./ec2asgcurl [options]
 ```
 
 ### Required Options
@@ -26,7 +29,7 @@ go run main.go [options]
 ## Example: GET Request
 
 ```sh
-go run main.go -asg-name my-asg -region eu-west-2 -path /healthz -port 8080
+./ec2asgcurl -asg-name my-asg -region eu-west-2 -path /healthz -port 8080
 ```
 
 ## Example: POST Request
@@ -42,13 +45,13 @@ Suppose you have a file `payload.json`:
 Run:
 
 ```sh
-go run main.go -asg-name my-asg -region eu-west-2 -post payload.json -request-type application/json -path /api/submit
+./ec2asgcurl -asg-name my-asg -region eu-west-2 -post payload.json -request-type application/json -path /api/submit
 ```
 
 ## Example: Custom Headers
 
 ```sh
-go run main.go -asg-name my-asg -region eu-west-2 -headers "Authorization=Bearer123,Custom-Header=Value"
+./ec2asgcurl -asg-name my-asg -region eu-west-2 -headers "Authorization=Bearer123,Custom-Header=Value"
 ```
 
 ## Example Output
