@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version'
+        description: "Release version"
         required: true
         type: string
   push:
@@ -14,7 +14,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write  # Allow pushing tags/releases
+  contents: write
 
 jobs:
   build-and-test:
@@ -27,13 +27,20 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.24'
+          go-version: "1.24"
 
       - name: Run make all
         run: make all
 
       - name: Run make coverage
         run: make coverage
+
+      - name: Upload coverage as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: build/coverage.html
+          if-no-files-found: warn
 
   release:
     if: github.event_name == 'workflow_dispatch'
@@ -46,13 +53,20 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.24'
+          go-version: "1.24"
 
       - name: Run make all
         run: make all
 
       - name: Run make coverage
         run: make coverage
+
+      - name: Upload coverage as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: build/coverage.html
+          if-no-files-found: warn
 
       - name: Run make cross-build
         run: make cross-build
@@ -122,4 +136,4 @@ jobs:
                 headers,
                 data: content
               });
-            } 
+            }
